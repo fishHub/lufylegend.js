@@ -6,7 +6,7 @@ var LGlobal = function (){throw "LGlobal cannot be instantiated";};
 设置全屏
 */
 LGlobal.FULL_SCREEN="full_screen";
-LGlobal.type = "LGlobal";
+LGlobal.type = "LGlobal";//类的类型
 LGlobal.traceDebug = false;
 LGlobal.aspectRatio = NONE;
 LGlobal.script = null;
@@ -22,7 +22,7 @@ LGlobal.preventDefault = true;
 LGlobal.childList = new Array();
 LGlobal.buttonList = new Array();
 LGlobal.stageScale = "noScale";
-LGlobal.align = "M";
+LGlobal.align = "M";//默认为居中对齐
 LGlobal.canTouch = false;
 LGlobal.os = OS_PC;
 LGlobal.ios = false;
@@ -61,9 +61,9 @@ LGlobal.setDebug = function (v){
 	LGlobal.traceDebug = v; 
 };
 LGlobal.setCanvas = function (id,w,h){
-	LGlobal.id = id;
+	LGlobal.id = id;//设定全局canvas id
 	LGlobal.window = window;
-	LGlobal.object = document.getElementById(id);
+	LGlobal.object = document.getElementById(id);//设定LGlobal.object为canvas的父容器
 	LGlobal.object.innerHTML='<div style="position:absolute;margin:0px 0px 0px 0px;overflow:visible;-webkit-transform: translateZ(0);z-index:0;">'+
 	'<canvas id="' + LGlobal.id + '_canvas" style="margin:0px 0px 0px 0px;width:'+w+'px;height:'+h+'px;">'+
 	'<div id="noCanvas">'+
@@ -73,29 +73,29 @@ LGlobal.setCanvas = function (id,w,h){
 	'<div id="' + LGlobal.id + '_InputText" style="position:absolute;margin:0px 0px 0px 0px;z-index:10;display:none;">'+
 	'<textarea rows="1" id="' + LGlobal.id + '_InputTextareaBox" style="resize:none;background:transparent;border:0px;"></textarea>'+
 	'<input type="text" id="' + LGlobal.id + '_InputTextBox"  style="background:transparent;border:0px;" /><input type="password" id="' + LGlobal.id + '_passwordBox"  style="background:transparent;border:0px;" /></div>';
-	LGlobal.canvasObj = document.getElementById(LGlobal.id+"_canvas");
+	LGlobal.canvasObj = document.getElementById(LGlobal.id+"_canvas");//设定LGlobal.canvasObj为canvas的容器
 	LGlobal._canvas=document.createElement("canvas");
 	LGlobal._context=LGlobal._canvas.getContext("2d");
-	if(LGlobal._context){
+	if(LGlobal._context){//判断浏览器是否支持canvas,支持的话就把中间黑微软的那段话去掉
 		LGlobal.canvasObj.innerHTML="";
 	}
-	LGlobal.inputBox = document.getElementById(LGlobal.id + '_InputText');
-	LGlobal.inputTextareaBoxObj = document.getElementById(LGlobal.id + '_InputTextareaBox');
-	LGlobal.inputTextBoxObj = document.getElementById(LGlobal.id + '_InputTextBox');
-	LGlobal.passwordBoxObj = document.getElementById(LGlobal.id + '_passwordBox');
+	LGlobal.inputBox = document.getElementById(LGlobal.id + '_InputText');//设定LGlobal.inputBox为输入元素的父容器
+	LGlobal.inputTextareaBoxObj = document.getElementById(LGlobal.id + '_InputTextareaBox');//设定LGlobal.inputTextareaBoxObj为textarea元素
+	LGlobal.inputTextBoxObj = document.getElementById(LGlobal.id + '_InputTextBox');//设定LGlobal.inputTextareaBoxObj为TextBox元素
+	LGlobal.passwordBoxObj = document.getElementById(LGlobal.id + '_passwordBox');//设定LGlobal.inputTextareaBoxObj为passwordBox元素
 	LGlobal.inputTextField = null;
-	if(w){LGlobal.canvasObj.width = w;}
+	if(w){LGlobal.canvasObj.width = w;}//判断传入的高度和宽度是否为空值
 	if(h){LGlobal.canvasObj.height = h;}
-	LGlobal.width = LGlobal.canvasObj.width;
-	LGlobal.height = LGlobal.canvasObj.height;
+	LGlobal.width = LGlobal.canvasObj.width;//设定LGlobal.width为canvas宽度
+	LGlobal.height = LGlobal.canvasObj.height;//设定LGlobal.width为canvas高度
 	LGlobal.canvas = LGlobal.canvasObj.getContext("2d");
 	LGlobal.offsetX = 0;
 	LGlobal.offsetY = 0;
-	LGlobal.stage = new LSprite();
-	LGlobal.stage.parent = "root";
-	LGlobal.childList.push(LGlobal.stage);
-	if(LSystem.sv == LStage.FULL_SCREEN){LGlobal.resize();}
-	if(LGlobal.canTouch){
+	LGlobal.stage = new LSprite();//初始化舞台为一个LSprite容器类
+	LGlobal.stage.parent = "root";//该容器类为根级元素
+	LGlobal.childList.push(LGlobal.stage);//将该容器加到LGlobal的childList里
+	if(LSystem.sv == LStage.FULL_SCREEN){LGlobal.resize();}//当为全屏设定时，重绘canvas;
+	if(LGlobal.canTouch){//当为触摸设备时
 		LEvent.addEventListener(LGlobal.canvasObj,LMouseEvent.TOUCH_START,function(event){
 			if(LGlobal.inputBox.style.display != NONE){
 				LGlobal.inputTextField.text = LGlobal.inputTextBox.value;
@@ -372,7 +372,9 @@ LGlobal.setStageSize = function(w,h){
 	LGlobal.canvasObj.style.height = h+"px";
 };
 LGlobal.resize = function(){
+	//ww,wh分别为窗口的文档显示区的高度和宽度,不包括菜单栏、工具栏以及滚动条等的高度。
 	var w,h,t=0,l=0,ww=window.innerWidth,wh=window.innerHeight;
+	//判断舞台类型，详细见LStageScaleMode.js
 	switch(LGlobal.stageScale){
 		case "exactFit":
 			w = ww;
@@ -380,9 +382,11 @@ LGlobal.resize = function(){
 			break;
 		case "noBorder":
 			w = ww;
-			h = LGlobal.height*ww/LGlobal.width;
+			h = LGlobal.height*ww/LGlobal.width;//根据宽度算出等比例的高，可能有裁剪发生
 			break;
 		case "showAll":
+			//当相同高度情况下屏幕宽度大于当前设定宽度时,高度取屏幕高度,然后算出等比例宽度。
+			//当相同高度情况下屏幕宽度小于当前设定宽度时,宽度取屏幕宽度,然后算出等比例高度。
 			if(ww/wh > LGlobal.width/LGlobal.height){
 				h = wh;
 				w = LGlobal.width*wh/LGlobal.height;
@@ -391,6 +395,7 @@ LGlobal.resize = function(){
 				h = LGlobal.height*ww/LGlobal.width;
 			}
 		default:
+			//判断舞台对齐方式，详细见LStageAlign.js
 			switch(LGlobal.align){
 				case LStageAlign.BOTTOM:
 				case LStageAlign.BOTTOM_LEFT:
@@ -420,9 +425,10 @@ LGlobal.resize = function(){
 				case LStageAlign.TOP_LEFT:
 				default:
 			}
+			//用margin设定canvas的对齐方式
 			LGlobal.canvasObj.style.marginTop = t + "px";
 			LGlobal.canvasObj.style.marginLeft = l + "px";
 	}
-	LGlobal.setStageSize(w,h);
+	LGlobal.setStageSize(w,h);//设定canvas舞台大小
 };
 var LStage = LGlobal;

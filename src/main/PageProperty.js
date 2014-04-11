@@ -21,9 +21,12 @@ function addChild(o){
 function removeChild(o){
 	LGlobal.stage.removeChild(o);
 }
+//初始化函数，init(speed(canvas刷新间隔，单位毫秒),divid(canvas的父容器ID),width(canvas宽度),height(canvas高度),
+//completeFunc(初始化完成后调用函数),type(当值为null时会在window.load事件之后执行，当值为LEvent.INIT则会在之后执行))
 function init(s,c,w,h,f,t){
-	LGlobal.speed = s;
+	LGlobal.speed = s;//设定全局canvas刷新时间间隔
 	var _f = function (){
+		//当程序设备为触摸设备并且屏幕为横屏并且屏幕宽度小于屏幕高度的情况下，执行横屏处理，否则执行竖屏处理
 		if(LGlobal.canTouch && LGlobal.aspectRatio == LANDSCAPE && window.innerWidth < window.innerHeight){
 			LGlobal.horizontalError();
 		}else if(LGlobal.canTouch && LGlobal.aspectRatio == PORTRAIT && window.innerWidth > window.innerHeight){
@@ -31,7 +34,7 @@ function init(s,c,w,h,f,t){
 		}else{
 			f();
 		}
-		LGlobal.startTimer = (new Date()).getTime();
+		LGlobal.startTimer = (new Date()).getTime();//记录旋转开始时间
 	};
 	if(t != null && t == LEvent.INIT){
 		LGlobal.frameRate = setInterval(function(){LGlobal.onShow();}, s);
